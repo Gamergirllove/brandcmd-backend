@@ -6,11 +6,15 @@ from functools import lru_cache
 class Settings(BaseSettings):
     # Supabase
     supabase_url: str = Field(..., env="SUPABASE_URL")
-    supabase_service_key: str = Field(..., env="SUPABASE_SERVICE_KEY")
+    supabase_service_key: str = Field(..., env="SUPABASE_SERVICE_ROLE_KEY")
 
     # YouTube / Google
-    youtube_client_id: str = Field(default="", env="YOUTUBE_CLIENT_ID")
-    youtube_client_secret: str = Field(default="", env="YOUTUBE_CLIENT_SECRET")
+    youtube_client_id: str = Field(default="", env="GOOGLE_CLIENT_ID")
+    youtube_client_secret: str = Field(default="", env="GOOGLE_CLIENT_SECRET")
+
+    # Twitch
+    twitch_client_id: str = Field(default="", env="TWITCH_CLIENT_ID")
+    twitch_client_secret: str = Field(default="", env="TWITCH_CLIENT_SECRET")
 
     # Instagram
     instagram_client_id: str = Field(default="", env="INSTAGRAM_CLIENT_ID")
@@ -43,11 +47,4 @@ class Settings(BaseSettings):
     # App config
     frontend_url: str = Field(default="http://localhost:3000", env="FRONTEND_URL")
     secret_key: str = Field(default="changeme", env="SECRET_KEY")
-    token_encryption_key: str = Field(default="", env="TOKEN_ENCRYPTION_KEY")
-
-    model_config = {"env_file": ".env", "case_sensitive": False}
-
-
-@lru_cache()
-def get_settings() -> Settings:
-    return Settings()
+    token_encryption_key: str = Field(default=""

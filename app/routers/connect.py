@@ -77,6 +77,14 @@ OAUTH_CONFIGS = {
         "client_secret_key": "snapchat_client_secret",
         "extra_params": {},
     },
+    "twitch": {
+        "auth_url": "https://id.twitch.tv/oauth2/authorize",
+        "token_url": "https://id.twitch.tv/oauth2/token",
+        "scope": "user:read:email channel:read:analytics channel:read:subscriptions",
+        "client_id_key": "twitch_client_id",
+        "client_secret_key": "twitch_client_secret",
+        "extra_params": {},
+    },
 }
 
 
@@ -251,12 +259,4 @@ async def _enrich_tokens(platform: str, token_data: dict, settings) -> dict:
                     d = resp.json()
                     token_data["username"] = f"{d.get('localizedFirstName','')} {d.get('localizedLastName','')}".strip()
             elif platform == "facebook":
-                resp = await client.get(
-                    "https://graph.facebook.com/v18.0/me",
-                    params={"fields": "name", "access_token": access_token},
-                )
-                if resp.status_code == 200:
-                    token_data["username"] = resp.json().get("name")
-    except Exception:
-        pass
-    return token_data
+           
