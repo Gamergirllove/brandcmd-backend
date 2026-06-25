@@ -46,6 +46,7 @@ class Settings(BaseSettings):
 
     # App config
     frontend_url: str = Field(default="http://localhost:3000")
+    backend_url: str = Field(default="http://localhost:8000")
     secret_key: str = Field(default="changeme")
     token_encryption_key: str = Field(default="")
 

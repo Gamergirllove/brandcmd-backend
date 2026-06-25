@@ -89,7 +89,7 @@ OAUTH_CONFIGS = {
 
 
 def _callback_url(platform: str, settings) -> str:
-    return f"{settings.frontend_url}/connect/{platform}/callback"
+    return f"{settings.backend_url}/connect/{platform}/callback"
 
 
 @router.get("/status", response_model=ConnectStatusResponse)
