@@ -259,4 +259,25 @@ async def _enrich_tokens(platform: str, token_data: dict, settings) -> dict:
                     d = resp.json()
                     token_data["username"] = f"{d.get('localizedFirstName','')} {d.get('localizedLastName','')}".strip()
             elif platform == "facebook":
-           
+                resp = await client.get(
+                    "https://graph.facebook.com/v18.0/me",
+                    params={"fields": "name", "access_token": access_token},
+                )
+                if resp.status_code == 200:
+                    token_data["username"] = resp.json().get("name")
+            elif platform == "twitch":
+                resp = await client.get(
+                    "https://api.twitch.tv/helix/users",
+                    headers={
+                        "Authorization": f"Bearer {access_token}",
+                        "Client-Id": getattr(settings, "twitch_client_id", ""),
+                    },
+                )
+                if resp.status_code == 200:
+                    users = resp.json().get("data", [])
+                    if users:
+                        token_data["username"] = users[0].get("login")
+                        token_data["twitch_user_id"] = users[0].get("id")
+    except Exception:
+        pass
+    return token_data
